@@ -7,6 +7,7 @@ import { PDFViewer } from './components/viewer/PDFViewer';
 import { CanvasEditor } from './components/editor/CanvasEditor';
 import { AIPanel } from './components/ai/AIPanel';
 import { FileUploader } from './components/ui/FileUploader';
+import { OCRPanel } from './components/ocr/OCRPanel';
 
 const App: React.FC = () => {
   const { document, ui, toggleSidebar } = useAppStore();
@@ -27,6 +28,16 @@ const App: React.FC = () => {
             <span className="text-sm text-gray-600">
               {document.file?.name}
             </span>
+            <button
+              onClick={() => toggleSidebar('ocr')}
+              className={`px-3 py-1.5 text-sm rounded transition-colors ${
+                ui.sidebar === 'ocr'
+                  ? 'bg-green-500 text-white'
+                  : 'bg-gray-100 hover:bg-gray-200'
+              }`}
+            >
+              📄 OCR
+            </button>
             <button
               onClick={() => toggleSidebar('ai')}
               className={`px-3 py-1.5 text-sm rounded transition-colors ${
@@ -55,6 +66,11 @@ const App: React.FC = () => {
         </main>
 
         {/* Sidebar */}
+        {ui.sidebar === 'ocr' && (
+          <aside className="w-80 border-l bg-white overflow-hidden">
+            <OCRPanel />
+          </aside>
+        )}
         {ui.sidebar === 'ai' && (
           <aside className="w-80 border-l bg-white overflow-hidden">
             <AIPanel />
