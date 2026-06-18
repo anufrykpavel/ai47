@@ -1,5 +1,6 @@
 /**
  * OCR Panel Component
+ * Mint color theme for OCR functionality
  */
 import React, { useState, useCallback } from 'react';
 import { ocrEngine, OCRResult } from '../../core/ocr';
@@ -210,24 +211,24 @@ export const OCRPanel: React.FC = () => {
   }, [fullText]);
 
   return (
-    <div className="h-full flex flex-col bg-gray-50">
+    <div className="h-full flex flex-col bg-green-50">
       {/* Header */}
-      <div className="px-4 py-3 border-b bg-white">
-        <h3 className="font-semibold text-gray-800">OCR</h3>
+      <div className="px-6 py-4 border-b border-green-200 bg-white/50">
+        <h3 className="font-semibold text-gray-800 text-lg">OCR</h3>
         <p className="text-sm text-gray-500 mt-1">
           Extract text from images and PDFs
         </p>
       </div>
 
       {/* Language selector */}
-      <div className="px-4 py-3 border-b bg-white">
+      <div className="px-6 py-4 border-b border-green-200 bg-white/50">
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Language
         </label>
         <select
           value={language}
           onChange={(e) => setLanguage(e.target.value)}
-          className="w-full px-3 py-2 border rounded-lg text-sm"
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-green-500 focus:border-green-500"
         >
           {languages.map((lang) => (
             <option key={lang.code} value={lang.code}>
@@ -238,11 +239,11 @@ export const OCRPanel: React.FC = () => {
       </div>
 
       {/* Actions */}
-      <div className="px-4 py-3 border-b bg-white">
+      <div className="px-6 py-4 border-b border-green-200 bg-white/50">
         <button
           onClick={handleOCR}
           disabled={status === 'loading' || !document.file}
-          className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-4 py-2.5 bg-green-600 text-white rounded-full text-sm font-medium hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {status === 'loading' ? (
             <span className="flex items-center justify-center gap-2">
@@ -256,7 +257,7 @@ export const OCRPanel: React.FC = () => {
       </div>
 
       {/* Results */}
-      <div className="flex-1 overflow-auto p-4">
+      <div className="flex-1 overflow-auto p-6">
         {status === 'error' && (
           <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
             <p className="text-sm text-red-600">{error}</p>
@@ -266,46 +267,46 @@ export const OCRPanel: React.FC = () => {
         {status === 'success' && (
           <>
             {/* Stats */}
-            <div className="mb-4 grid grid-cols-2 gap-2">
-              <div className="p-3 bg-white border rounded-lg">
-                <div className="text-2xl font-bold text-blue-500">
+            <div className="mb-6 grid grid-cols-2 gap-3">
+              <div className="p-4 bg-white border border-green-200 rounded-2xl shadow-sm">
+                <div className="text-3xl font-bold text-green-600">
                   {results.length}
                 </div>
-                <div className="text-xs text-gray-500">Words detected</div>
+                <div className="text-xs text-gray-500 uppercase tracking-wide mt-1">Words detected</div>
               </div>
-              <div className="p-3 bg-white border rounded-lg">
-                <div className="text-2xl font-bold text-green-500">
-                  {Math.round(
+              <div className="p-4 bg-white border border-green-200 rounded-2xl shadow-sm">
+                <div className="text-3xl font-bold text-green-600">
+                  {results.length > 0 ? Math.round(
                     results.reduce((acc, r) => acc + r.confidence, 0) / results.length
-                  )}%
+                  ) : 0}%
                 </div>
-                <div className="text-xs text-gray-500">Avg confidence</div>
+                <div className="text-xs text-gray-500 uppercase tracking-wide mt-1">Avg confidence</div>
               </div>
             </div>
 
             {/* Actions */}
-            <div className="flex gap-2 mb-4">
+            <div className="flex gap-3 mb-6">
               <button
                 onClick={copyToClipboard}
-                className="flex-1 px-3 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200"
+                className="flex-1 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-50 transition-colors"
               >
                 Copy
               </button>
               <button
                 onClick={downloadText}
-                className="flex-1 px-3 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200"
+                className="flex-1 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-50 transition-colors"
               >
                 Download
               </button>
             </div>
 
             {/* Full text */}
-            <div className="mb-4">
-              <h4 className="text-sm font-medium text-gray-700 mb-2">
+            <div className="mb-6">
+              <h4 className="text-sm font-medium text-gray-700 mb-3 uppercase tracking-wide">
                 Full Text
               </h4>
-              <div className="p-3 bg-white border rounded-lg">
-                <pre className="text-sm text-gray-800 whitespace-pre-wrap">
+              <div className="p-4 bg-white border border-green-200 rounded-2xl shadow-sm">
+                <pre className="text-sm text-gray-800 whitespace-pre-wrap font-sans">
                   {fullText || 'No text detected'}
                 </pre>
               </div>
@@ -314,18 +315,18 @@ export const OCRPanel: React.FC = () => {
             {/* Words with bboxes */}
             {results.length > 0 && (
               <div>
-                <h4 className="text-sm font-medium text-gray-700 mb-2">
+                <h4 className="text-sm font-medium text-gray-700 mb-3 uppercase tracking-wide">
                   Detected Words
                 </h4>
                 <div className="space-y-2">
                   {results.slice(0, 20).map((word, idx) => (
                     <div
                       key={idx}
-                      className="p-2 bg-white border rounded-lg flex justify-between items-center"
+                      className="p-3 bg-white border border-green-100 rounded-xl flex justify-between items-center shadow-sm"
                     >
-                      <span className="text-sm font-medium">{word.text}</span>
+                      <span className="text-sm font-medium text-gray-800">{word.text}</span>
                       <span
-                        className={`text-xs px-2 py-1 rounded ${
+                        className={`text-xs px-2 py-1 rounded-full font-medium ${
                           word.confidence > 80
                             ? 'bg-green-100 text-green-700'
                             : word.confidence > 50
@@ -350,9 +351,8 @@ export const OCRPanel: React.FC = () => {
       </div>
 
       {/* Footer */}
-      <div className="px-4 py-3 border-t bg-white text-xs text-gray-500">
-        <p>Powered by Tesseract.js</p>
-        <p className="mt-1">Runs locally in your browser</p>
+      <div className="px-6 py-4 border-t border-green-200 bg-white/50 text-xs text-gray-500">
+        <p>Powered by Tesseract.js • Runs locally</p>
       </div>
     </div>
   );
